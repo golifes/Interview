@@ -13,6 +13,7 @@ type SingleNode struct {
 //头结点
 type List struct {
 	headNode *SingleNode
+	count    int
 }
 
 /*
@@ -20,27 +21,15 @@ type List struct {
 */
 
 func (l *List) IsEmpty() bool {
-	if l.headNode == nil {
+	if l.count == 0 {
 		return true
 	}
 	return false
 }
 
-//获取长度
-func (l *List) Len() (count int) {
-	cur := l.headNode
-	for cur != nil {
-		count += 1
-		cur = cur.Next
-	}
-	return count
-}
 
-/**
-添加元素(尾部添加和头部添加)
-*/
-
-func (l *List) Head(data interface{}) *SingleNode {
+//头部增加节点
+func (l *List) Head(data interface{}) {
 	// a b c
 	// d a b c
 	node := &SingleNode{Data: data}
@@ -48,42 +37,54 @@ func (l *List) Head(data interface{}) *SingleNode {
 	node.Next = l.headNode
 	//把链表的头结点的头指向当前节点
 	l.headNode = node
-	return node
+
+	l.count++
+	return
 }
 
-func (l *List) Tail(data interface{}) *SingleNode {
+//尾部增加节点
+func (l *List) Tail(data interface{}) {
 	node := &SingleNode{Data: data}
+
 	if l.IsEmpty() {
 		l.headNode = node
+
 	} else {
 		//获取尾节点
-		cur := l.headNode
+		tail := l.headNode
 
 		/**
 		必须判断cur.next !=nil
 		*/
-		for cur.Next != nil {
-			cur = cur.Next
+		for tail.Next != nil {
+			tail = tail.Next
 		}
-		cur.Next = node
+
+		tail.Next = node //添加新的尾部节点
+
 	}
-	return node
+
+	l.count++
+	return
 }
 
-//在指定的位置添加元素
-func (l *List) Insert(index int, data interface{}) *SingleNode {
-	if index <= 0 {
-		return l.Head(data)
-	} else if index > l.Len() {
-		return l.Tail(data)
+//在指定的位置添加节点
+func (l *List) Insert(index int, data interface{}) {
+	if index == 0 { //在头部添加节点
+		l.Head(data)
+
+	} else if index > l.count { //在尾部增加节点
+		l.Tail(data)
+
 	} else {
-		//前置节点
-		cur := l.headNode
+
+		cur := l.headNode //当前节点为头节点
 		count := 1
-		for count < index {
+		for count < index { //计算要插入位置的前置节点
 			cur = cur.Next
 			count += 1
 		}
+
 		/**
 			a   b
 		    a c b
@@ -99,47 +100,64 @@ func (l *List) Insert(index int, data interface{}) *SingleNode {
 		*/
 		node.Next = cur.Next
 		cur.Next = node
-		return node
 	}
+
+	l.count++
 }
 
-//删除指定位置的元素
-func (l *List) RemoveIndex(index int) {
-	//保证这个位置是有效的
-	if index == 0 {
-		//删除头结点
+//删除指定位置的节点
+func (l *List) RemoveNodeByIndex(index int) {
+
+	if index == 0 { //删除头结点
 		l.headNode = l.headNode.Next
-	} else if index < 0 || index > l.Len() {
-		return
+
+	} else if index > l.count { //删除尾结点
+
+		tail := l.headNode
+		for tail.Next != nil {
+			tail = tail.Next
+		}
+
+		tail.Next = nil //尾部节点next 指向nil
+
 	} else {
-		count := 1
+
 		cur := l.headNode
-		for count != index && cur.Next != nil {
+
+		count := 1
+		for count != index && cur.Next != nil {//寻找指定位置的节点
 			count += 1
 			cur = cur.Next
 		}
+
 		cur.Next = cur.Next.Next
 	}
+
+	l.count--
 }
 
-//删除指定的值
-func (l *List) Remove(data interface{}) {
+//删除指定值的节点
+func (l *List) RemoveNodeByValue(data interface{}) {
+
 	cur := l.headNode
-	if cur.Data == data {
+	if cur.Data == data {//要删除的值恰好为头节点
 		// a b c  d
 		//  b  c  d
 		//l.headNode = cur.Next  表示把b设置为头结点
 		l.headNode = cur.Next
+
 	} else {
-		//循环遍历
+
 		for cur.Next != nil {
-			if cur.Next.Data == data {
+			if cur.Next.Data == data {//要删除的值在链表非头部位置
 				cur.Next = cur.Next.Next
 			} else {
 				cur = cur.Next
 			}
 		}
 	}
+
+	l.count--
 }
 
 //判断元素是否在节点中
@@ -158,14 +176,18 @@ func (l *List) Contains(data interface{}) bool {
 //遍历链表
 
 func (l *List) ShowList() {
-	if l.Len() != 0 {
-		cur := l.headNode
-
-		for {
-			fmt.Sprintf("\t%v", cur.Data)
-			if cur != nil {
-				cur = cur.Next
-			}
-		}
+	if l.IsEmpty() {
+		fmt.Println("link is empty")
+		return
 	}
+
+	res := "head=>"
+
+	for cur := l.headNode; cur != nil; cur = cur.Next {
+		res += fmt.Sprintf("%v=>", cur.Data)
+	}
+
+	res += "tail"
+
+	fmt.Println(res)
 }
