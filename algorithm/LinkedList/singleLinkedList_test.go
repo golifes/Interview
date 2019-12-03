@@ -36,8 +36,5 @@ func TestList_Insert(t *testing.T) {
 	fmt.Println("删除值为3的节点-----")
 	list.ShowList()
 
-	fmt.Println("list.count",list.count)
+	fmt.Println("list.count", list.count)
 }
-
-
-

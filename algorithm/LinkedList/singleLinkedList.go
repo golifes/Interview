@@ -27,13 +27,12 @@ func (l *List) IsEmpty() bool {
 	return false
 }
 
-
 //头部增加节点
 func (l *List) Head(data interface{}) {
 	// a b c
 	// d a b c
 	node := &SingleNode{Data: data}
-	//把当前节点的下一个节点只想链表节点的头节点
+	//把当前节点的下一个节点指向链表节点的头节点
 	node.Next = l.headNode
 	//把链表的头结点的头指向当前节点
 	l.headNode = node
@@ -55,6 +54,7 @@ func (l *List) Tail(data interface{}) {
 
 		/**
 		必须判断cur.next !=nil
+		因为为节点的next是nil
 		*/
 		for tail.Next != nil {
 			tail = tail.Next
@@ -125,7 +125,7 @@ func (l *List) RemoveNodeByIndex(index int) {
 		cur := l.headNode
 
 		count := 1
-		for count != index && cur.Next != nil {//寻找指定位置的节点
+		for count != index && cur.Next != nil { //寻找指定位置的节点
 			count += 1
 			cur = cur.Next
 		}
@@ -140,7 +140,7 @@ func (l *List) RemoveNodeByIndex(index int) {
 func (l *List) RemoveNodeByValue(data interface{}) {
 
 	cur := l.headNode
-	if cur.Data == data {//要删除的值恰好为头节点
+	if cur.Data == data { //要删除的值恰好为头节点
 		// a b c  d
 		//  b  c  d
 		//l.headNode = cur.Next  表示把b设置为头结点
@@ -149,7 +149,7 @@ func (l *List) RemoveNodeByValue(data interface{}) {
 	} else {
 
 		for cur.Next != nil {
-			if cur.Next.Data == data {//要删除的值在链表非头部位置
+			if cur.Next.Data == data { //要删除的值在链表非头部位置
 				cur.Next = cur.Next.Next
 			} else {
 				cur = cur.Next
