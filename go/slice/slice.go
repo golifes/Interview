@@ -1,6 +1,19 @@
-package slice
+package main
 
 import "fmt"
+
+func main() { //expand cap
+	a := make([]int, 2)//2,1024,5000
+	fmt.Printf("len(%d),cap(%d)\n", len(a), cap(a))
+
+	//a = append(a, 1,2,3)
+
+	a=append(a, 1)
+	a=append(a, 2)
+	a=append(a, 3)
+
+	fmt.Printf("len(%d),cap(%d)\n", len(a), cap(a))
+}
 
 func Create() {
 	s1 := []string{"a", "b", "c", "d"}

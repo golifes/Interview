@@ -1,4 +1,4 @@
-package slice
+package main
 
 import (
 	"fmt"
@@ -14,7 +14,6 @@ func TestArray(t *testing.T) {
 }
 
 func TestAddr(t *testing.T) {
-	Addr()
 	u := ^uintptr(0)
 	fmt.Println(u)
 	//4 << (^uintptr(0) >> 63)
