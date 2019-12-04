@@ -56,5 +56,5 @@
                    slice的长度小于1024，则还是按照2次方扩容
                 b:
                    slice扩容在原来的cap大小的基础上按照1\4扩容   
-                最后是slice赋值过程(memmove(p, old.array, lenmem)),在这个赋值过程中，slice的地址是不会发生变化，但是是一个新的slice
+                最后是slice赋值过程(memmove(p, old.array, lenmem)),在这个赋值过程中，slice的地址是不会发生变化，但是是一个新的slice(因为array unsafe.Pointer 这个是不变的，新的对象是因为len和cap已经发生改变)
 ```
