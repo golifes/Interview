@@ -17,7 +17,7 @@ func main() {
 	// h.hash0 = fastrand()
 	a = make(map[int]int) //创建map，在栈上分配直接调用 fastrand
 
-	a[1] = 1      //map 存值
+	a[1] = 1      //map 存值 runtime.mapassign_fast64(SB)
 	v, ok := a[1] //map取值
 
 	fmt.Println(v, ok)
