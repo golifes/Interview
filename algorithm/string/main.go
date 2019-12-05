@@ -7,6 +7,9 @@ func main() {
 	fmt.Println(getOnlyOneChar2("aqabcdbdq"))
 }
 
+//& 与 （都是1时，结果才为1）
+//| 或 （只要有1，那么就是1）
+//^ 异或 （只要一样结果就是0）
 func getOnlyOneChar(s string) string {
 	if s == "" {
 		return ""
@@ -14,7 +17,7 @@ func getOnlyOneChar(s string) string {
 
 	var t int32
 	for _, v := range s {
-		t^=v //字符串之间异或操作
+		t ^= v //字符串之间异或操作
 	}
 
 	return string(t)
