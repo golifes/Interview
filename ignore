@@ -1,2 +1,17 @@
 .idea
 .vscode
+
+main
+*.o
+*.s
+*.asm
+*.a
+*.out
+*.gdb_history
+.vscode
+.html
+.h
+.zip
+.tar
+.gzip
+.txt
