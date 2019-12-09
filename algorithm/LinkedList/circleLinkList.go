@@ -7,7 +7,7 @@ type CirCleNode struct {
 	Next *CirCleNode
 }
 
-//节点
+//节点 http://www.360doc.com/content/18/0518/15/11935121_754982751.shtml
 type CirCleList struct {
 	Count int
 	Head  *CirCleNode //头节点
