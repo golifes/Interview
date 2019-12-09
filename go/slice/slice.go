@@ -8,7 +8,28 @@ func main() { //expand cap
 
 	//a = append(a, 1,2,3)
 
-	a=append(a, 1)
+	//扩容逻辑：
+	// cap=old.cap+1= 2+1 =3
+	// newcap := old.cap = 2
+	// doublecap :=  newcap + newcap = 2+2 =4
+
+	// 如果 cap > doublecap 则 newcap = cap = 3,
+	// 否则 cap < doublecap， 如果old.len<1024 则 newcap = doublecap =4
+
+	//内存对齐 roundupsize
+	//roundupsize(uintptr(newcap) * sys.PtrSize) = roundupsize(4*8) =roundupsize(32)
+	// 32<_MaxSmallSize=32768， 并且 size <= smallSizeMax-8 = 32<=1024-8=1016
+	// 走逻辑 return uintptr(class_to_size[size_to_class8[(size+smallSizeDiv-1)/smallSizeDiv]])
+
+	// size_to_class8[(size+smallSizeDiv-1)/smallSizeDiv] = size_to_class8[(32+8-1)/8] = size_to_class8[(32+8-1)/8] = size_to_class8[4]
+	// 查size_to_class8 数组得 size_to_class8[4]= 3， 再查class_to_size数组 得class_to_size[3] = 32
+
+	// 计算 capmem = roundupsize(uintptr(newcap) * sys.PtrSize) = roundupsize(32) =32
+	// 最后计算 newcap = int(capmem / sys.PtrSize) = int(32/8)=4
+
+	//最终返回 return slice{p, old.len, newcap} => return slice{p, old.len, 4}
+
+	a=append(a, 1)//所以cap=4，同理可计算下面的cap
 	a=append(a, 2)
 	a=append(a, 3)
 
