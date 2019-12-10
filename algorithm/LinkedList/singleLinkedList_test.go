@@ -37,8 +37,8 @@ func TestList_Insert(t *testing.T) {
 	list.ShowList()
 
 	fmt.Println("list.count", list.count)
-	l := reverseList(&list)
+	l := reverseList(list.headNode)
 
-	l.ShowList()
+	fmt.Println(l)
 
 }

@@ -208,20 +208,25 @@ func (l *List) RevereList() {
 }
 
 /**
- * Definition for singly-linked list.
- * type ListNode struct {
- *     Val int
- *     Next *ListNode
- * }
- */
+  LeetCode
+* Definition for singly-linked list.
+* type ListNode struct {
+*     Val int
+*     Next *ListNode
+* }
+*/
 
-func reverseList(head *List) *List {
-	prev := head.headNode
-	prev = nil
-	cur := head.headNode
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func reverseList(head *ListNode) *ListNode {
+	var prev *ListNode
+
+	cur := head
 	for cur != nil {
 		cur.Next, prev, cur = prev, cur, cur.Next
 	}
-	head.headNode = prev
-	return head
+	return prev
 }
