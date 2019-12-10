@@ -98,8 +98,8 @@ func (l *List) Insert(index int, data interface{}) {
 			cur.Next = node 表示a的下一个节点是a
 
 		*/
-		node.Next = cur.Next
-		cur.Next = node
+		node.Next = cur.Next //新增节点的后继指针指向当前节点的后继指针所指向的节点
+		cur.Next = node      //当前节点的后继指针指向新增节点
 	}
 
 	l.count++

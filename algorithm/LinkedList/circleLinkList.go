@@ -14,15 +14,30 @@ type CirCleList struct {
 	Tail  *CirCleNode //尾结点
 }
 
-//初始化工作
-func (c *CirCleList) New() {
-	c.Count = 0
-	c.Head = nil
-	c.Tail = nil
+type CirClear interface {
+	New()
+	GetIndex(index int) *CirCleNode          //查询下表
+	Append(node *CirCleNode) bool            //尾部添加
+	Insert(index int, node *CirCleNode) bool //指定位置插入节点数据
+	Delete(index int) bool                   //按照下标删除
+	IsHead(node *CirCleNode) bool            //判断是否是头结点
+	IsTail(node *CirCleNode) bool            //判断是否是头结点
+
 }
 
-//查询下标
-func (c *CirCleList) Index(index int) *CirCleNode {
+type CirNodes interface {
+	GetNodeData() interface{} //获取某个节点的数据
+	GetNext() *CirCleNode     //获取当前节点的下一个节点
+	GetPre() *CirCleNode      //获取当前节点的上一个节点
+}
+
+func (c *CirCleList) New() {
+	c.Count = 0
+	c.Head = nil //头
+	c.Tail = nil //尾
+}
+
+func (c *CirCleList) GetIndex(index int) *CirCleNode {
 	if c.Count == 0 || index > c.Count-1 {
 		return nil
 	}
@@ -30,100 +45,99 @@ func (c *CirCleList) Index(index int) *CirCleNode {
 	if index == 0 {
 		return c.Head
 	}
-	//遍历
-	node := c.Head
 
-	for i := 0; i <= index; i++ {
+	node := c.Head
+	count := 0
+	for count < index {
 		node = node.Next
+		count++
 	}
 
 	return node
 }
 
-//后面添加
+//尾部添加
 func (c *CirCleList) Append(node *CirCleNode) bool {
 	if node == nil {
 		return false
 	}
-	//就一个节点
 	if c.Count == 0 {
-		c.Head = node
 		c.Tail = node
+		c.Head = node
 		node.Next = nil
-		node.Pre = nil
+		node.Pre = node
 	} else {
-
-		/**
-				     cur      node
-		 			 a        b
-
-					在a后面添加b
-					b的前置节点是a尾结点，也就是a的尾结点指向的是b的前置节点
-					b的下一个节点
-
-		*/
 		node.Pre = c.Tail
-		//node.Next = nil
+		node.Next = nil
 		c.Tail.Next = node
 		c.Tail = node
 	}
-
 	c.Count++
-
 	return true
 }
 
-//指定位置插入
 func (c *CirCleList) Insert(index int, node *CirCleNode) bool {
-	//-1 表示尾部 大于count就是超过了尾部
 	if node == nil || index > c.Count {
 		return false
 	}
 
 	if index == c.Count {
-		return c.Append(node)
+		c.Append(node)
+	} else {
+		cirCleNode := c.GetIndex(index)
+
+		node.Pre = cirCleNode.Pre
+		node.Next = cirCleNode
+		cirCleNode.Pre.Next = node
+		cirCleNode.Pre = node
 	}
 
-	if index == 0 {
-		node.Next = c.Head
-		c.Head = node
-		//c.Head.Pre = nil
-		c.Count++
-		return true
-	}
-
-	cleNode := c.Index(index)
-	node.Pre = cleNode.Pre
-	node.Next = cleNode
-	cleNode.Pre.Next = node
-	cleNode.Pre = node
 	c.Count++
+
 	return true
+
 }
 
-//删除节点
 func (c *CirCleList) Delete(index int) bool {
+	//index 从0开始
 	if index > c.Count-1 {
 		return false
 	}
+	//从头部删除
+	cur := c.GetIndex(index)
 
-	if index == 0 {
+	if index <= 0 {
 		if c.Count == 1 {
-			c.Head = nil
-			c.Tail = nil
+			c.New()
 		} else {
-			// todo ????
-			c.Head.Next.Pre = nil
-			c.Head = c.Head.Next
+			c.Tail = cur.Next
 		}
-
-		c.Count--
-		return true
+	} else {
+		c.Tail = cur.Next
 	}
-
-	node := c.Index(index)
-	node.Pre.Next = node.Next
-	node.Next.Pre = node.Pre
 	c.Count--
 	return true
+}
+
+func (c *CirCleList) IsHead(node *CirCleNode) bool {
+	return c.Head == node
+}
+
+func (c *CirCleList) IsTail(node *CirCleNode) bool {
+	return c.Tail == node
+}
+
+//获取节点数据
+func (c *CirCleNode) GetNodeData() interface{} {
+	return c.Data
+}
+
+//获取下一个节点
+func (c *CirCleNode) GetNext() *CirCleNode {
+	return c.Next
+}
+
+//获取上一个节点
+func (c *CirCleNode) GetPre() *CirCleNode {
+	return c.Pre
 }
