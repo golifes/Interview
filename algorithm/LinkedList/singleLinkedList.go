@@ -191,3 +191,18 @@ func (l *List) ShowList() {
 
 	fmt.Println(res)
 }
+
+//链表反转
+
+// 1->2->3->4->5-nil
+// 5->4->3->2->1->nil
+func (l *List) RevereList() {
+	var prev *SingleNode
+	prev = nil
+
+	cur := l.headNode
+	for cur != nil {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+	l.headNode = prev
+}
