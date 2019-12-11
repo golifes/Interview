@@ -230,3 +230,40 @@ func (l *List) RevereList() {
 //	}
 //	return prev
 //}
+
+func (l *List) IsHui() bool {
+
+	var prev *SingleNode
+
+	midLength := l.count / 2
+
+	cur := l.headNode
+	for i := 0; i < midLength; i++ {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+
+	midNode := cur
+
+	var left, right *SingleNode = prev, nil
+	if l.count%2 == 0 {
+		right = midNode
+	} else {
+		right = midNode.Next
+	}
+
+	for left != nil && right != nil {
+		if left.Data != right.Data {
+			return false
+		}
+		left = left.Next
+		right = right.Next
+	}
+
+	cur = prev
+	prev = midNode
+	for cur != nil {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+
+	return true
+}
