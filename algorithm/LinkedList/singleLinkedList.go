@@ -98,8 +98,8 @@ func (l *List) Insert(index int, data interface{}) {
 			cur.Next = node 表示a的下一个节点是a
 
 		*/
-		node.Next = cur.Next
-		cur.Next = node
+		node.Next = cur.Next //新增节点的后继指针指向当前节点的后继指针所指向的节点
+		cur.Next = node      //当前节点的后继指针指向新增节点
 	}
 
 	l.count++
@@ -190,4 +190,80 @@ func (l *List) ShowList() {
 	res += "tail"
 
 	fmt.Println(res)
+}
+
+//链表反转
+
+// 1->2->3->4->5-nil
+// 5->4->3->2->1->nil
+func (l *List) RevereList() {
+	var prev *SingleNode
+	prev = nil
+
+	cur := l.headNode
+	for cur != nil {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+	l.headNode = prev
+}
+
+/**
+  LeetCode
+* Definition for singly-linked list.
+* type ListNode struct {
+*     Val int
+*     Next *ListNode
+* }
+*/
+
+//type ListNode struct {
+//	Val  int
+//	Next *ListNode
+//}
+//
+//func reverseList(head *ListNode) *ListNode {
+//	var prev *ListNode
+//
+//	cur := head
+//	for cur != nil {
+//		cur.Next, prev, cur = prev, cur, cur.Next
+//	}
+//	return prev
+//}
+
+func (l *List) IsHui() bool {
+
+	var prev *SingleNode
+
+	midLength := l.count / 2
+
+	cur := l.headNode
+	for i := 0; i < midLength; i++ {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+
+	midNode := cur
+
+	var left, right *SingleNode = prev, nil
+	if l.count%2 == 0 {
+		right = midNode
+	} else {
+		right = midNode.Next
+	}
+
+	for left != nil && right != nil {
+		if left.Data != right.Data {
+			return false
+		}
+		left = left.Next
+		right = right.Next
+	}
+
+	cur = prev
+	prev = midNode
+	for cur != nil {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+
+	return true
 }
