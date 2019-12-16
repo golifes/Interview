@@ -138,6 +138,9 @@ func (l *List) RemoveNodeByIndex(index int) {
 
 //删除指定值的节点
 func (l *List) RemoveNodeByValue(data interface{}) {
+	if l.count == 0 {
+		return
+	}
 
 	cur := l.headNode
 	if cur.Data == data { //要删除的值恰好为头节点
@@ -171,6 +174,83 @@ func (l *List) Contains(data interface{}) bool {
 		cur = cur.Next
 	}
 	return false
+}
+
+func (l *List) ContainsRec(node *SingleNode, data interface{}) bool {
+	if node == nil {
+		return false
+	}
+
+	if node.Data == data {
+		return true
+	}
+
+	return l.ContainsRec(node.Next, data)
+}
+
+/**
+其中一个是头结点或者尾结点？ 交换数据  -->交换节点
+*/
+func (l *List) SwapData(x, y interface{}) bool {
+	if l.count <= 1 {
+		return false
+	}
+	if x == y {
+		return false
+	}
+
+	cur := l.headNode
+	curX := &SingleNode{}
+	curY := &SingleNode{}
+
+	for cur != nil {
+		if cur.Data == x {
+			curX = cur
+		} else if cur.Data == y {
+			curY = cur
+		}
+		cur = cur.Next
+	}
+
+	if curX.Data == nil || curY.Data == nil {
+		return false
+	}
+	temp := curX.Data
+	curX.Data = curY.Data
+	curY.Data = temp
+	return true
+}
+
+func (l *List) SwapNode(x, y interface{}) bool {
+	if l.count <= 1 {
+		return false
+	}
+	if x == y {
+		return false
+	}
+
+	cur := l.headNode
+	curX := &SingleNode{}
+	curY := &SingleNode{}
+
+	for cur != nil {
+		if cur.Data == x {
+			curX = cur
+		} else if cur.Data == y {
+			curY = cur
+		}
+		cur = cur.Next
+	}
+
+	if curX.Data == nil || curY.Data == nil {
+		return false
+	}
+
+	//todo   bug  交换指针地址
+	temp := &curX
+	curX.Next = curY.Next
+	curY = *temp
+	return true
 }
 
 //遍历链表

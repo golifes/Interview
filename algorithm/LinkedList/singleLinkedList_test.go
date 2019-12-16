@@ -10,12 +10,20 @@ func TestList_Insert(t *testing.T) {
 	list.Head(1)
 	list.Head(2)
 	list.Head(3)
-	list.Head(2)
-	list.Head(1)
+	list.Head(4)
+	list.Head(5)
 
-	fmt.Println("插入两个头节点-----")
+	//fmt.Println("插入两个头节点-----")
 	list.ShowList()
-	list.IsHui()
+	//list.IsHui()
+	//list.ShowList()
+	//contains := list.Contains(3)
+	//fmt.Println(contains)
+	//rec := list.ContainsRec(list.headNode, 5)
+	//fmt.Println(rec)
+
+	node := list.SwapNode(3, 4)
+	fmt.Println(node)
 	list.ShowList()
 
 	//
