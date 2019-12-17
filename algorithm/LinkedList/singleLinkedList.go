@@ -282,6 +282,21 @@ func (l *List) ShowList() {
 	fmt.Println(res)
 }
 
+//咋单链表造环
+func (l *List) CheckCir() bool {
+	slow := l.headNode
+	fast := l.headNode
+	if slow != nil && fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+		if fast == slow {
+			return true
+		}
+	}
+
+	return false
+}
+
 //链表反转
 
 // 1->2->3->4->5-nil
