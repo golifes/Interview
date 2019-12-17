@@ -1,6 +1,7 @@
 package LinkedList
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -11,7 +12,7 @@ func TestList_Insert(t *testing.T) {
 	list.Head(3)
 	list.Head(4)
 	list.Head(5)
-
+	list.Head(5)
 	//fmt.Println("插入两个头节点-----")
 	list.ShowList()
 	//list.IsHui()
@@ -20,8 +21,9 @@ func TestList_Insert(t *testing.T) {
 	//fmt.Println(contains)
 	//rec := list.ContainsRec(list.headNode, 5)
 	//fmt.Println(rec)
-	list.SwapPairs(list.headNode)
-	list.ShowList()
+	//list.SwapPairs(list.headNode)
+	elem := list.CountElem(5)
+	fmt.Println(elem)
 
 	//node := list.SwapNode(3, 4)
 	//fmt.Println(node)

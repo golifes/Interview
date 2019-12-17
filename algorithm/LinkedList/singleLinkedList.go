@@ -357,3 +357,22 @@ func (l *List) IsHui() bool {
 
 	return true
 }
+
+//计算元素出现的个数
+func (l *List) CountElem(x interface{}) int {
+
+	cur := l.headNode
+	if cur == nil {
+		return 0
+	}
+
+	count := 0
+	for cur != nil {
+		if cur.Data == x {
+			count++
+		}
+		cur = cur.Next
+	}
+
+	return count
+}
