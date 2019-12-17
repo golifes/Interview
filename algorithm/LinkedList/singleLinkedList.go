@@ -247,10 +247,20 @@ func (l *List) SwapNode(x, y interface{}) bool {
 	}
 
 	//todo   bug  交换指针地址
-	temp := &curX
+	temp := &curX.Next
 	curX.Next = curY.Next
 	curY = *temp
 	return true
+}
+
+func (l *List) SwapPairs(head *SingleNode) *SingleNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	t := head.Next
+	head.Next = l.SwapPairs(t.Next)
+	t.Next = head
+	return t
 }
 
 //遍历链表

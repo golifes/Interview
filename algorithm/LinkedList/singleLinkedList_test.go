@@ -1,7 +1,6 @@
 package LinkedList
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -21,10 +20,12 @@ func TestList_Insert(t *testing.T) {
 	//fmt.Println(contains)
 	//rec := list.ContainsRec(list.headNode, 5)
 	//fmt.Println(rec)
-
-	node := list.SwapNode(3, 4)
-	fmt.Println(node)
+	list.SwapPairs(list.headNode)
 	list.ShowList()
+
+	//node := list.SwapNode(3, 4)
+	//fmt.Println(node)
+	//list.ShowList()
 
 	//
 	//list.Tail(3)
