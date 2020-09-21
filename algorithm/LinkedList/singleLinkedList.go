@@ -138,6 +138,9 @@ func (l *List) RemoveNodeByIndex(index int) {
 
 //删除指定值的节点
 func (l *List) RemoveNodeByValue(data interface{}) {
+	if l.count == 0 {
+		return
+	}
 
 	cur := l.headNode
 	if cur.Data == data { //要删除的值恰好为头节点
@@ -173,6 +176,93 @@ func (l *List) Contains(data interface{}) bool {
 	return false
 }
 
+func (l *List) ContainsRec(node *SingleNode, data interface{}) bool {
+	if node == nil {
+		return false
+	}
+
+	if node.Data == data {
+		return true
+	}
+
+	return l.ContainsRec(node.Next, data)
+}
+
+/**
+其中一个是头结点或者尾结点？ 交换数据  -->交换节点
+*/
+func (l *List) SwapData(x, y interface{}) bool {
+	if l.count <= 1 {
+		return false
+	}
+	if x == y {
+		return false
+	}
+
+	cur := l.headNode
+	curX := &SingleNode{}
+	curY := &SingleNode{}
+
+	for cur != nil {
+		if cur.Data == x {
+			curX = cur
+		} else if cur.Data == y {
+			curY = cur
+		}
+		cur = cur.Next
+	}
+
+	if curX.Data == nil || curY.Data == nil {
+		return false
+	}
+	temp := curX.Data
+	curX.Data = curY.Data
+	curY.Data = temp
+	return true
+}
+
+func (l *List) SwapNode(x, y interface{}) bool {
+	if l.count <= 1 {
+		return false
+	}
+	if x == y {
+		return false
+	}
+
+	cur := l.headNode
+	curX := &SingleNode{}
+	curY := &SingleNode{}
+
+	for cur != nil {
+		if cur.Data == x {
+			curX = cur
+		} else if cur.Data == y {
+			curY = cur
+		}
+		cur = cur.Next
+	}
+
+	if curX.Data == nil || curY.Data == nil {
+		return false
+	}
+
+	//todo   bug  交换指针地址
+	temp := &curX.Next
+	curX.Next = curY.Next
+	curY = *temp
+	return true
+}
+
+func (l *List) SwapPairs(head *SingleNode) *SingleNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	t := head.Next
+	head.Next = l.SwapPairs(t.Next)
+	t.Next = head
+	return t
+}
+
 //遍历链表
 
 func (l *List) ShowList() {
@@ -192,6 +282,21 @@ func (l *List) ShowList() {
 	fmt.Println(res)
 }
 
+//咋单链表造环
+func (l *List) CheckCir() bool {
+	slow := l.headNode
+	fast := l.headNode
+	if slow != nil && fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+		if fast == slow {
+			return true
+		}
+	}
+
+	return false
+}
+
 //链表反转
 
 // 1->2->3->4->5-nil
@@ -207,4 +312,82 @@ func (l *List) RevereList() {
 	l.headNode = prev
 }
 
+/**
+  LeetCode
+* Definition for singly-linked list.
+* type ListNode struct {
+*     Val int
+*     Next *ListNode
+* }
+*/
 
+//type ListNode struct {
+//	Val  int
+//	Next *ListNode
+//}
+//
+//func reverseList(head *ListNode) *ListNode {
+//	var prev *ListNode
+//
+//	cur := head
+//	for cur != nil {
+//		cur.Next, prev, cur = prev, cur, cur.Next
+//	}
+//	return prev
+//}
+
+func (l *List) IsHui() bool {
+
+	var prev *SingleNode
+
+	midLength := l.count / 2
+
+	cur := l.headNode
+	for i := 0; i < midLength; i++ {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+
+	midNode := cur
+
+	var left, right *SingleNode = prev, nil
+	if l.count%2 == 0 {
+		right = midNode
+	} else {
+		right = midNode.Next
+	}
+
+	for left != nil && right != nil {
+		if left.Data != right.Data {
+			return false
+		}
+		left = left.Next
+		right = right.Next
+	}
+
+	cur = prev
+	prev = midNode
+	for cur != nil {
+		cur.Next, prev, cur = prev, cur, cur.Next
+	}
+
+	return true
+}
+
+//计算元素出现的个数
+func (l *List) CountElem(x interface{}) int {
+
+	cur := l.headNode
+	if cur == nil {
+		return 0
+	}
+
+	count := 0
+	for cur != nil {
+		if cur.Data == x {
+			count++
+		}
+		cur = cur.Next
+	}
+
+	return count
+}

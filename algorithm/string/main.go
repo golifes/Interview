@@ -3,6 +3,7 @@ package main
 import "fmt"
 
 func main() {
+	fmt.Println(getOnlyOneCharPos("aqabcdbdq"))
 	fmt.Println(getOnlyOneChar("aqabcdbdq"))
 	fmt.Println(getOnlyOneChar2("aqabcdbdq"))
 }
@@ -21,6 +22,23 @@ func getOnlyOneChar(s string) string {
 	}
 
 	return string(t)
+}
+
+func getOnlyOneCharPos(s string) int {
+	if s == "" {
+		return -1
+	}
+
+	var arr [26]int
+
+	var t int32
+	for k, v := range s {
+		t ^= v //字符串之间异或操作
+
+		arr[v-'a']=k
+	}
+
+	return arr[t-'a']
 }
 
 //输入一个字符串，字符范围为a-zA-Z,其中只有一个字符出现了一次，其他的字符都出现了两次.

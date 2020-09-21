@@ -25,6 +25,7 @@ func main() {
 	//	fmt.Println(k, string(v))
 	//}
 	length := len(y)
+	// bug  todo  1221 这样的
 	mid := length/2 - 1
 	if length%2 == 0 {
 		return
